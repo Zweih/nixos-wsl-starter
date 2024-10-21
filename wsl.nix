@@ -8,7 +8,7 @@
   ...
 }: {
   # FIXME: change to your tz! look it up with "timedatectl list-timezones"
-  time.timeZone = "America/Los_Angeles";
+  time.timeZone = "America/Denver";
 
   networking.hostName = "${hostname}";
 
@@ -51,6 +51,7 @@
 
   wsl = {
     enable = true;
+    wslConf.boot.command = "ip address flush dev eth0 # see networkctl command output for the interface name, assuming eth0 here"
     wslConf.automount.root = "/mnt";
     wslConf.interop.appendWindowsPath = false;
     wslConf.network.generateHosts = false;
