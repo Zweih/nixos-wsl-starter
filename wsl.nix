@@ -50,8 +50,8 @@
 
   wsl = {
     enable = true;
-    wslConf.boot.command = "ip address flush dev eth0"
-    # wslConf.automount.root = "/mnt";
+    wslConf.boot.command = "ip address flush dev eth0";
+    wslConf.automount.root = "/mnt";
     wslConf.interop.appendWindowsPath = false;
     wslConf.network.generateHosts = false;
     defaultUser = username;
