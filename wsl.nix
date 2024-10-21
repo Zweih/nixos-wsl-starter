@@ -51,7 +51,7 @@
 
   wsl = {
     enable = true;
-    wslConf.boot.command = "ip address flush dev eth0 # see networkctl command output for the interface name, assuming eth0 here"
+    wslConf.boot.command = "ip address flush dev eth0"
     wslConf.automount.root = "/mnt";
     wslConf.interop.appendWindowsPath = false;
     wslConf.network.generateHosts = false;
@@ -85,6 +85,19 @@
   #     done
   #   '';
   # };
+
+  systemd.network = {
+    enable = true;
+    networks."10-eth0" = {
+      matchConfig.Name = "eth0";
+
+      networkConfig = {
+        Address = [ "192.168.1.30/24" ];
+        Gateway = "192.168.1.1";
+        DNS = [ "192.168.1.1" ];
+      };
+    };
+  };
 
   nix = {
     settings = {
