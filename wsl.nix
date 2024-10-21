@@ -9,7 +9,11 @@
 }: {
   time.timeZone = "America/Denver";
 
-  networking.hostName = "${hostname}";
+  networking = {
+    hostName = "${hostname}";
+    useDHCP = false;
+    useNetworkd = true;
+  };
 
   # FIXME: change your shell here if you don't want fish
   programs.fish.enable = true;
@@ -96,6 +100,24 @@
         DNS = [ "192.168.1.1" ];
       };
     };
+  };
+
+  systemd.services."systemd-networkd-wait-online" = {
+    serviceConfig = {
+      ExecStart = ''
+        ${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online --any --timeout=10
+      '';
+    };
+  };
+
+  systemd.services.systemd-resolved = {
+    enable = true;
+  };
+
+  system.activationScripts.resolvConfLink = {
+    text = ''
+      ln -sfv /run/systemd/resolve/resolv.conf /etc/resolv.conf
+    '';
   };
 
   nix = {
